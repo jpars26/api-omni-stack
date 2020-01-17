@@ -3,13 +3,18 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const routes = require('./routes');
 
-
 const app = express();
 
-mongoose.connect('mongodb+srv://Joao:684007ja@cluster0-m6ri6.mongodb.net/test?retryWrites=true&w=majority',
-{   useNewUrlParser: true,
-    useUnifiedTopology: true}
-)
+const usernameDb = 'Joao';
+const passwordDb = '684007ja';
+const URL_CONNECTION = `mongodb+srv://${usernameDb}:${passwordDb}@cluster0-m6ri6.mongodb.net/test?retryWrites=true&w=majority`
+const optionsDb = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+};
+
+mongoose.connect(URL_CONNECTION,optionsDb);
+
 //Configuração validos para todas as rotas
 app.use(cors());
 app.use(express.json());
@@ -27,10 +32,15 @@ app.use(routes)
 // MongoDB (Banco Não-Relacional)
 
 app.post('/users', (request, response) => {
-    console.log(request.body);
-    return response.json({ message: 'Hello Jpars'});
-
+    console.log("BODY => " + request.body);
+    const messageObject = { 
+        message: 'Hello Jpars' 
+    };
+    return response.json(messageObject);
 });
 
+
 // Escolha da porta para acesso
-app.listen(3333);
+const PORT = 3333;
+
+app.listen(PORT);
